@@ -25,6 +25,7 @@ let setup = env => {
     fruits: [],
   };
 };
+
 let fadeMouseTrail = points => {
   points |> List.map(point => {...point, alpha: point.alpha -. 0.1});
 };
@@ -53,29 +54,32 @@ let draw = (state, env) => {
   Draw.image(state.sprites.apple, ~pos=(0, 0), ~width=30, ~height=30, env);
 
   state.mousePoints
-  |> List.iter(point => {
-       Draw.fill(
-         Utils.color(
-           ~r=255,
-           ~g=0,
-           ~b=0,
-           ~a=int_of_float(point.alpha *. 255.0),
-         ),
-         env,
-       );
-       let (x, y) = point.point;
-       Draw.ellipsef(
-         ~center=(float_of_int(x), float_of_int(y)),
-         ~radx=4.0,
-         ~rady=4.0,
-         env,
-       );
-     });
+  |> List.iteri((index, point) =>
+       if (index != 0) {
+         let previousPoint = state.mousePoints->List.nth(index - 1);
+         let alpha = (point.alpha +. previousPoint.alpha) /. 2.0;
+
+         Draw.stroke(
+           Utils.color(
+             ~r=255,
+             ~g=0,
+             ~b=0,
+             ~a=int_of_float(alpha *. 255.0),
+           ),
+           env,
+         );
+         Draw.strokeCap(Round, env);
+         Draw.strokeWeight(4, env);
+
+         Draw.line(~p1=point.point, ~p2=previousPoint.point, env);
+       }
+     );
 
   {
     ...state,
     position: state.position +. 10.0,
-    mousePoints: state.mousePoints |> fadeMouseTrail |> addMousePointIfMouseDown(env),
+    mousePoints:
+      state.mousePoints |> fadeMouseTrail |> addMousePointIfMouseDown(env),
   };
 };
 
