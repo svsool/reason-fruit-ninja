@@ -58,27 +58,6 @@ type fruitState =
   | Half2
   | Half2Small;
 
-type fruitSprite = {
-  normal: imageT,
-  half: imageT,
-  halfSmall: imageT,
-  half2: imageT,
-  half2Small: imageT
-};
-
-type fruitSprites = {
-  apple: fruitSprite,
-  banana: fruitSprite,
-  orange: fruitSprite,
-  pineapple: fruitSprite,
-  watermelon: fruitSprite
-};
-
-type makeResult = {
-  sprites,
-  fruitSprites
-};
-
 let make = env => {
   let apple = Draw.loadImage(~filename="assets/apple.png", ~isPixel=true, env);
   let appleHalf =
@@ -263,92 +242,87 @@ let make = env => {
       env
     );
   {
-    sprites: {
-      apple,
-      appleHalf,
-      appleHalfSmall,
-      appleHalf2,
-      appleHalf2Small,
-      background,
-      banana,
-      bananaHalf1,
-      bananaHalf1Small,
-      bananaHalf2,
-      bananaHalf2Small,
-      bananaSmall,
-      bomb,
-      bombSmall,
-      coconut,
-      coconutHalf1,
-      coconutHalf1Small,
-      coconutHalf2,
-      coconutHalf2Small,
-      coconutSmall,
-      explosion,
-      explosionSmall,
-      orange,
-      orangeHalf1,
-      orangeHalf1Small,
-      orangeHalf2,
-      orangeHalf2Small,
-      orangeSmall,
-      pineapple,
-      pineappleHalf1,
-      pineappleHalf1Small,
-      pineappleHalf2,
-      pineappleHalf2Small,
-      pineappleSmall,
-      splashOrange,
-      splashOrangeSmall,
-      splashRed,
-      splashRedSmall,
-      splashTransparent,
-      splashTransparentSmall,
-      splashYellow,
-      splashYellowSmall,
-      watermelon,
-      watermelonHalf1,
-      watermelonHalf1Small,
-      watermelonHalf2,
-      watermelonHalf2Small,
-      watermelonSmall
-    },
-    fruitSprites: {
-      apple: {
-        normal: apple,
-        half: appleHalf,
-        halfSmall: appleHalfSmall,
-        half2: appleHalf2,
-        half2Small: appleHalf2Small
-      },
-      banana: {
-        normal: banana,
-        half: bananaHalf1,
-        halfSmall: bananaHalf1Small,
-        half2: bananaHalf2,
-        half2Small: bananaHalf2Small
-      },
-      orange: {
-        normal: orange,
-        half: orangeHalf1,
-        halfSmall: orangeHalf1Small,
-        half2: orangeHalf2,
-        half2Small: orangeHalf2Small
-      },
-      pineapple: {
-        normal: pineapple,
-        half: pineappleHalf1,
-        halfSmall: pineappleHalf1Small,
-        half2: pineappleHalf2,
-        half2Small: pineappleHalf2Small
-      },
-      watermelon: {
-        normal: watermelon,
-        half: watermelonHalf1,
-        halfSmall: watermelonHalf1Small,
-        half2: watermelonHalf2,
-        half2Small: watermelonHalf2Small
-      }
-    }
-  };
+        apple,
+        appleHalf,
+        appleHalfSmall,
+        appleHalf2,
+        appleHalf2Small,
+        background,
+        banana,
+        bananaHalf1,
+        bananaHalf1Small,
+        bananaHalf2,
+        bananaHalf2Small,
+        bananaSmall,
+        bomb,
+        bombSmall,
+        coconut,
+        coconutHalf1,
+        coconutHalf1Small,
+        coconutHalf2,
+        coconutHalf2Small,
+        coconutSmall,
+        explosion,
+        explosionSmall,
+        orange,
+        orangeHalf1,
+        orangeHalf1Small,
+        orangeHalf2,
+        orangeHalf2Small,
+        orangeSmall,
+        pineapple,
+        pineappleHalf1,
+        pineappleHalf1Small,
+        pineappleHalf2,
+        pineappleHalf2Small,
+        pineappleSmall,
+        splashOrange,
+        splashOrangeSmall,
+        splashRed,
+        splashRedSmall,
+        splashTransparent,
+        splashTransparentSmall,
+        splashYellow,
+        splashYellowSmall,
+        watermelon,
+        watermelonHalf1,
+        watermelonHalf1Small,
+        watermelonHalf2,
+        watermelonHalf2Small,
+        watermelonSmall
+      };
+};
+
+let getFruitSprite = (fruitName, state, sprites) => {
+    switch (fruitName, state) {
+        | ("apple", Normal) => sprites.apple
+        | ("apple", Half) => sprites.appleHalf
+        | ("apple", HalfSmall) => sprites.appleHalfSmall
+        | ("apple", Half2) => sprites.appleHalf2
+        | ("apple", Half2Small) => sprites.appleHalf2Small
+
+        | ("banana", Normal) => sprites.banana
+        | ("banana", Half) => sprites.bananaHalf1
+        | ("banana", HalfSmall) => sprites.bananaHalf1Small
+        | ("banana", Half2) => sprites.bananaHalf2
+        | ("banana", Half2Small) => sprites.bananaHalf2Small
+
+        | ("orange", Normal) => sprites.orange
+        | ("orange", Half) => sprites.orangeHalf1
+        | ("orange", HalfSmall) => sprites.orangeHalf1Small
+        | ("orange", Half2) => sprites.orangeHalf2
+        | ("orange", Half2Small) => sprites.orangeHalf2Small
+
+        | ("pineapple", Normal) => sprites.pineapple
+        | ("pineapple", Half) => sprites.pineappleHalf1
+        | ("pineapple", HalfSmall) => sprites.pineappleHalf1Small
+        | ("pineapple", Half2) => sprites.pineappleHalf2
+        | ("pineapple", Half2Small) => sprites.pineappleHalf2Small
+
+        | ("watermelon", Normal) => sprites.watermelon
+        | ("watermelon", Half) => sprites.watermelonHalf1
+        | ("watermelon", HalfSmall) => sprites.watermelonHalf1Small
+        | ("watermelon", Half2) => sprites.watermelonHalf2
+        | ("watermelon", Half2Small) => sprites.watermelonHalf2Small
+    };
 };
