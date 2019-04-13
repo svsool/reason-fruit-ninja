@@ -31,7 +31,7 @@ let fadeMouseTrail = points => {
 };
 
 let pruneMousePoints = points => {
-  points |> List.filter(point => point.alpha < 0.0);
+  points |> List.filter(point => point.alpha > 0.0);
 };
 
 let addMousePointIfMouseDown = (env, points) =>
@@ -60,17 +60,11 @@ let draw = (state, env) => {
          let alpha = (point.alpha +. previousPoint.alpha) /. 2.0;
 
          Draw.stroke(
-           Utils.color(
-             ~r=255,
-             ~g=0,
-             ~b=0,
-             ~a=int_of_float(alpha *. 255.0),
-           ),
+           Utils.color(~r=255, ~g=0, ~b=0, ~a=int_of_float(alpha *. 255.0)),
            env,
          );
+         Draw.strokeWeight(8, env);
          Draw.strokeCap(Round, env);
-         Draw.strokeWeight(4, env);
-
          Draw.line(~p1=point.point, ~p2=previousPoint.point, env);
        }
      );
@@ -79,7 +73,10 @@ let draw = (state, env) => {
     ...state,
     position: state.position +. 10.0,
     mousePoints:
-      state.mousePoints |> fadeMouseTrail |> addMousePointIfMouseDown(env),
+      state.mousePoints
+      |> fadeMouseTrail
+      |> addMousePointIfMouseDown(env)
+      |> pruneMousePoints,
   };
 };
 
