@@ -1,7 +1,15 @@
 open Reprocessing;
 
-type fruit =
-  | Banana;
+module Fruit = {
+  type t =
+    | Banana;
+};
+
+type fruit = {
+  position: (int, int),
+  split: bool,
+  type_: Fruit.t,
+};
 
 type mousePoint = {
   point: (int, int),
@@ -22,9 +30,11 @@ let setup = env => {
     position: 10.0,
     mousePoints: [{point: (100, 100), alpha: 1.0}],
     sprites,
-    fruits: [],
+    fruits: [{position: (200, 200), type_: Banana, split: false}],
   };
 };
+
+let pointsToLines = _points => ();
 
 let fadeMouseTrail = points => {
   points |> List.map(point => {...point, alpha: point.alpha -. 0.1});
@@ -51,7 +61,19 @@ let draw = (state, env) => {
     env,
   );
 
-  Draw.image(state.sprites.apple, ~pos=(0, 0), ~width=30, ~height=30, env);
+  state.fruits
+  |> List.map(fruit =>
+       switch (fruit.type_) {
+       | Fruit.Banana =>
+         let sprite =
+           if (fruit.split) {
+             state.sprites.bananaHalf1;
+           } else {
+             state.sprites.banana;
+           };
+         Draw.image(sprite, ~pos=fruit.position, ~width=60, ~height=60, env);
+       }
+     );
 
   state.mousePoints
   |> List.iteri((index, point) =>
